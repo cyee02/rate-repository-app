@@ -9,9 +9,9 @@ const theme = {
     buttons: '#0366D6',
   },
   fontSize: {
-    heading: 24,
-    normal: 14,
-    large: 18,
+    heading: 18,
+    normal: 15,
+    large: 16,
   },
   fonts: {
     main: 'Roboto-Medium',

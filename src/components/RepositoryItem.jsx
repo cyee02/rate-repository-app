@@ -19,17 +19,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   tab:{
-    flexGrow: 0,
+    flexGrow: 1,
     color: "white",
-    justifyContent: "space-around",
-    paddingTop: 5,
-    paddingLeft: 10,
-    // flex: 1,
-    flexWrap: 'wrap'
+    justifyContent: "center",
+    paddingTop: 5
   },
   profileIcon:{
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
+    padding: 5,
     borderRadius: 5
   },
   // Text related
@@ -84,9 +82,7 @@ const StatsTab = ({num, text}) => (
 
 const RepositoryItem = ({ item }) => {
   return(
-    <View style={{
-      // padding: 5,
-    }} >
+    <View>
       <View style={styles.container}>
         <View style={styles.tab}>
           <Image 
@@ -95,12 +91,14 @@ const RepositoryItem = ({ item }) => {
           />
         </View>
         <View style={styles.tab}>
-          <Text style={styles.textFullName}>{item.fullName}</Text>
-          <View style={{ width: 330}}>
-            <Text style={styles.description} >{item.description}</Text>
-          </View>
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <Text style={styles.language}>{item.language}</Text>
+          <View style={{ paddingLeft: 5 }}>
+            <Text style={styles.textFullName}>{item.fullName}</Text>
+            <View style={{ width: 330}}>
+              <Text style={styles.description} >{item.description}</Text>
+            </View>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <Text style={styles.language}>{item.language}</Text>
+            </View>
           </View>
         </View>
       </View>
