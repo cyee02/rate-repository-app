@@ -14,6 +14,15 @@ export const GET_REPOSITORIES = gql`
   ${REPOSITORY_DETAILS}
 `;
 
+export const GET_AUTHORIZED_USER = gql`
+  query authorizedUser {
+    authorizedUser {
+      id
+      username
+    }
+  }
+`;
+
 // export const ALL_BOOKS = gql`
 //   query allBooks ($author: String, $genre: String) {
 //     allBooks (

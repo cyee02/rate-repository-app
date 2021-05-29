@@ -21,19 +21,19 @@ const Main = () => {
     <View style={styles.container}>
       <AppBar />
       <Switch>
-        <Route path="/" exact>
-          <RepositoryList />
-        </Route>
-
         <Route path="/signin" exact>
           <SignIn />
+        </Route>
+
+        <Route path="/repositories" exact>
+          <RepositoryList />
         </Route>
 
         <Route path="/bmi" exact>
           <BodyMassIndexCalculator />
         </Route>
 
-        <Redirect to="/" />
+        <Redirect to="/signin" />
       </Switch>
     </View>
   );

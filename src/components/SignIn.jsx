@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Alert } from 'react-native';
 import { useHistory } from "react-router-native";
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -49,7 +49,7 @@ const SignInForm = ({ onSubmit }) => {
       <FormikTextInput autoCapitalize="none" style={styles.input} name="username" placeholder="Username" />
       <FormikTextInput autoCapitalize="none" style={styles.input} name="password" placeholder="Password" secureTextEntry={true} />
       <View alignItems='center'>
-        <Pressable style={styles.pressable} title="Sign In" onPress={onSubmit}>
+        <Pressable style={styles.pressable} onPress={onSubmit}>
           <Text style={styles.font} > Sign In </Text>
         </Pressable>
       </View>
@@ -72,11 +72,13 @@ const SignIn = () => {
 
   const onSubmit = async (values) => {
     const { username, password } = values;
-    history.push("/");
     try {
       await signIn({ username, password });
+      history.push("/repositories");
     } catch (e) {
-      console.log(e);
+      Alert.alert(
+        `${e}`
+      );
     }
   };
   return (
