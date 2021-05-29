@@ -1,35 +1,18 @@
 import { gql } from '@apollo/client';
+import { REPOSITORY_DETAILS } from './fragments';
 
 export const GET_REPOSITORIES = gql`
   query {
     repositories {
       edges {
         node {
-          id
-          ownerAvatarUrl
-          fullName
-          description
-          language
-          stargazersCount
-          forksCount
-          reviewCount
-          ratingAverage
+          ...RepositoryDetails
         }
       }
     }
   }
+  ${REPOSITORY_DETAILS}
 `;
-
-// const BOOK_DETAILS = gql`
-//   fragment BookDetails on Book {
-//     title
-//     author{
-//       name
-//     }
-//     published
-//     genres
-//     id
-//   }
 
 // export const ALL_BOOKS = gql`
 //   query allBooks ($author: String, $genre: String) {
