@@ -11,24 +11,32 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
+export class RepositoryListContainer extends React.Component {
+  render() {
+    const props = this.props;
+
+    // Get the nodes from the edges array
+    const repositoryNodes = props.repositories
+      ? props.repositories.edges.map(edge => edge.node)
+      : [];
+    const renderItem = ({ item }) => (
+      <RepositoryItem item={item} />
+    );
+    return (
+      <FlatList
+        data={repositoryNodes}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={renderItem}
+      />
+    );
+  }
+}
+
 const RepositoryList = () => {
   const { repositories } = useRepositories();
 
-  // Get the nodes from the edges array
-  const repositoryNodes = repositories
-  ? repositories.edges.map(edge => edge.node)
-  : [];
-
-  const renderItem = ({ item }) => (
-    <RepositoryItem item={item} />
-  );
-
   return (
-    <FlatList
-      data={repositoryNodes}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={renderItem}
-    />
+    <RepositoryListContainer repositories={repositories} />
   );
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { Route, Switch, Redirect } from 'react-router-native';
 import theme from '../../assets/theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import AppBar from './AppBar';
 import RepositoryList from './RepositoryList';
@@ -12,13 +13,13 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flexShrink: 1,
-    backgroundColor: theme.colors.background
+    // backgroundColor: theme.colors.background
   },
 });
 
 const Main = () => {
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#D5FFFF', '#E5FFFF']} style={styles.container}>
       <AppBar />
       <Switch>
         <Route path="/signin" exact>
@@ -35,7 +36,8 @@ const Main = () => {
 
         <Redirect to="/signin" />
       </Switch>
-    </View>
+    </LinearGradient>
+
   );
 };
 

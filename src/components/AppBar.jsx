@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight,
     paddingTop: 20,
     paddingBottom: 20,
-    backgroundColor: theme.colors.navbar,
+    backgroundColor: theme.colors.navbar
   },
   tabText: {
     color: theme.colors.white,

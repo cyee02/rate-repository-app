@@ -73,9 +73,9 @@ const formatNumber = (num) => {
   }
 };
 
-const StatsTab = ({num, text}) => (
+const StatsTab = ({num, text, testID}) => (
   <View>
-    <Text style={styles.data}>{formatNumber(num)}</Text>
+    <Text style={styles.data} testID={testID} >{formatNumber(num)}</Text>
     <Text style={styles.dataLabel}>{text}</Text>
   </View>
 );
@@ -92,21 +92,21 @@ const RepositoryItem = ({ item }) => {
         </View>
         <View style={styles.tab}>
           <View style={{ paddingLeft: 5 }}>
-            <Text style={styles.textFullName}>{item.fullName}</Text>
+            <Text style={styles.textFullName} testID="fullName">{item.fullName}</Text>
             <View style={{ width: 330}}>
-              <Text style={styles.description} >{item.description}</Text>
+              <Text style={styles.description} testID="description" >{item.description}</Text>
             </View>
             <View style={{ display: "flex", flexDirection: "row" }}>
-              <Text style={styles.language}>{item.language}</Text>
+              <Text style={styles.language} testID="language" >{item.language}</Text>
             </View>
           </View>
         </View>
       </View>
       <View style={styles.containerStats}>
-          <StatsTab num={item.stargazersCount} text='Stars'/>
-          <StatsTab num={item.forksCount} text='Forks'/>
-          <StatsTab num={item.reviewCount} text='Reviews'/>
-          <StatsTab num={item.ratingAverage} text='Rating'/>
+          <StatsTab num={item.stargazersCount} text='Stars' testID="stargazersCount"/>
+          <StatsTab num={item.forksCount} text='Forks' testID="forksCount"/>
+          <StatsTab num={item.reviewCount} text='Reviews' testID="reviewCount"/>
+          <StatsTab num={item.ratingAverage} text='Rating' testID="ratingAverage"/>
       </View>
     </View>
   );
