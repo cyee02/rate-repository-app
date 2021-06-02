@@ -78,7 +78,7 @@ const AppBar = () => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
-        <Tab text='Repositories' link="/repositories" show={loggedIn}/>
+        <Tab text='Repositories' link="/repositories" show={true}/>
         <Tab text='BMI' link="/bmi" show={loggedIn}/>
         <Tab text='Sign In' link="/signin" show={!loggedIn}/>
         <SignOutTab data={loggedIn} />

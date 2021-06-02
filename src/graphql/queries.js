@@ -23,13 +23,12 @@ export const GET_AUTHORIZED_USER = gql`
   }
 `;
 
-// export const ALL_BOOKS = gql`
-//   query allBooks ($author: String, $genre: String) {
-//     allBooks (
-//       author: $author,
-//       genre: $genre
-//     ) {
-//       ...BookDetails
-//     }
-//   }
-//   ${BOOK_DETAILS}
+export const GET_REPOSITORY = gql`
+  query repository ($id: ID!) {
+    repository (id: $id) {
+      url
+      ...RepositoryDetails
+    }
+  }
+  ${REPOSITORY_DETAILS}
+`;

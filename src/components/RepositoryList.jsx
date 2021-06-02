@@ -1,6 +1,8 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import useRepositories from '../hooks/useRepositories';
+import { useHistory } from "react-router-native";
+
 import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({
@@ -19,9 +21,18 @@ export class RepositoryListContainer extends React.Component {
     const repositoryNodes = props.repositories
       ? props.repositories.edges.map(edge => edge.node)
       : [];
-    const renderItem = ({ item }) => (
-      <RepositoryItem item={item} />
-    );
+
+    const renderItem = ({ item }) => {
+      const onPress = () => {
+        props.history.push(`/repository/${item.id}`)
+      }
+
+      return (
+        <Pressable onPress={onPress}>
+          <RepositoryItem item={item} />
+        </Pressable>
+      );
+    }
     return (
       <FlatList
         data={repositoryNodes}
@@ -34,9 +45,10 @@ export class RepositoryListContainer extends React.Component {
 
 const RepositoryList = () => {
   const { repositories } = useRepositories();
+  const history = useHistory();
 
   return (
-    <RepositoryListContainer repositories={repositories} />
+    <RepositoryListContainer repositories={repositories} history={history}/>
   );
 };
 

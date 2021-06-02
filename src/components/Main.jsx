@@ -8,6 +8,7 @@ import AppBar from './AppBar';
 import RepositoryList from './RepositoryList';
 import SignIn from './SignIn';
 import BodyMassIndexCalculator from './BodyMassIndexCalculator';
+import RepositoryView from './RepositoryView'
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +35,11 @@ const Main = () => {
           <BodyMassIndexCalculator />
         </Route>
 
-        <Redirect to="/signin" />
+        <Route path="/repository/:id" exact>
+          <RepositoryView />
+        </Route>
+
+        <Redirect to="/repositories" />
       </Switch>
     </LinearGradient>
 
