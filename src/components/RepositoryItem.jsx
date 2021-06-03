@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import * as Linking from 'expo-linking';
 import theme from '../../assets/theme';
 
 const styles = StyleSheet.create({
@@ -80,7 +81,35 @@ const StatsTab = ({num, text, testID}) => (
   </View>
 );
 
-const RepositoryItem = ({ item }) => {
+const GitHubButton = ({url}) => {
+  const openLink = () => {
+    Linking.openURL(url)
+  }
+  return (
+    <View style={{
+      backgroundColor: theme.colors.white,
+      height: 70,
+      alignItems: 'center',
+      justifyContent: 'center'}}>
+      <Pressable onPress={openLink} style={{
+          backgroundColor: theme.colors.buttons,
+          padding: 5,
+          width: 300,
+          height: 50,
+          borderRadius: 10,
+          justifyContent: 'center'}}>
+        <Text style={{
+          color: theme.colors.white,
+          fontFamily: theme.fonts.mainBold,
+          fontSize: theme.fontSize.large,
+          textAlign: 'center'
+          }}>Open in Github</Text>
+      </Pressable>
+    </View>
+  )
+}
+
+const RepositoryItem = ({ item, singleView }) => {
   return(
     <View>
       <View style={styles.container}>
@@ -108,6 +137,7 @@ const RepositoryItem = ({ item }) => {
           <StatsTab num={item.reviewCount} text='Reviews' testID="reviewCount"/>
           <StatsTab num={item.ratingAverage} text='Rating' testID="ratingAverage"/>
       </View>
+      {singleView ? <GitHubButton url={item.url}/> : <></>}
     </View>
   );
 };

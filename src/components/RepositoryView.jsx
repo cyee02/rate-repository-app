@@ -1,39 +1,76 @@
 import React from 'react';
 import theme from '../../assets/theme';
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import * as Linking from 'expo-linking';
+import { StyleSheet, FlatList, View, Text } from 'react-native';
 import { useParams } from 'react-router-native'
+import { format } from 'date-fns'
+
 import { useRepositorySingle } from '../hooks/useRepositories'
 
 import RepositoryItem from './RepositoryItem'
 
-const GitHubButton = ({url}) => {
-  const openLink = () => {
-    Linking.openURL(url)
+const styles = StyleSheet.create({
+  separator: {
+    height: 10,
+  },
+  reviewContainer: {
+    display: "flex",
+    padding: 15,
+    flexDirection: 'row',
+    height: 200,
+    backgroundColor: theme.colors.white
+  },
+  ratingContainer:{
+    width: 60,
+    height: 60,
+    padding: 10,
+    borderWidth: 2,
+    borderRadius: 30,
+    borderColor: theme.colors.buttons,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ratingText:{
+    color: theme.colors.buttons,
+    fontSize: 22,
+    fontFamily: theme.fonts.mainBold
+  },
+  reviewContent: {
+    marginLeft: 10,
+    width: 330,
+    flexGrow: 1
+  },
+  reviewNameText: {
+    color: theme.colors.textPrimary,
+    fontFamily: theme.fonts.mainBold,
+    fontSize: theme.fontSize.heading
+  },
+  datetimeText: {
+    color: theme.colors.textSecondary,
+    fontSize: theme.fontSize.normal,
+    fontFamily: theme.fonts.main
   }
+});
+const ItemSeparator = () => <View style={styles.separator} />;
+
+const ReviewItem = ({ data }) => {
+  const review = data.node
+  const datetime = format(new Date(review.createdAt), 'dd.MM.yyyy')
+
   return (
-    <View style={{
-      backgroundColor: theme.colors.white,
-      height: 80,
-      alignItems: 'center',
-      justifyContent: 'center'}}>
-      <Pressable onPress={openLink} style={{
-          backgroundColor: theme.colors.buttons,
-          padding: 5,
-          width: 300,
-          height: 50,
-          borderRadius: 10,
-          justifyContent: 'center'}}>
-        <Text style={{
-          color: theme.colors.white,
-          fontFamily: theme.fonts.mainBold,
-          fontSize: theme.fontSize.large,
-          textAlign: 'center'
-          }}>Open in Github</Text>
-      </Pressable>
+    <View style={styles.reviewContainer}>
+      <View style={styles.ratingContainer} >
+        <Text style={styles.ratingText} >{review.rating}</Text>
+      </View>
+      <View style={styles.reviewContent}>
+        <View style={{marginBottom: 5}}>
+          <Text style={styles.reviewNameText} >{review.user.username}</Text>
+          <Text style={styles.datetimeText} >{datetime}</Text>
+        </View>
+        <Text>{review.text}</Text>
+      </View>
     </View>
   )
-}
+};
 
 const RepositoryView = () => {
   const {id} = useParams();
@@ -44,10 +81,13 @@ const RepositoryView = () => {
     )
   }
   return (
-    <View>
-      <RepositoryItem item={repository} />
-      <GitHubButton url={repository.url}/>
-    </View>
+    <FlatList
+      data={repository.reviews.edges}
+      renderItem={({ item }) => <ReviewItem data={item} />}
+      keyExtractor={item => item.node.id}
+      ListHeaderComponent={() => <View style={{marginBottom: 10}}><RepositoryItem item={repository} singleView={true} /></View>}
+      ItemSeparatorComponent={ItemSeparator}
+    />
   )
 }
 
