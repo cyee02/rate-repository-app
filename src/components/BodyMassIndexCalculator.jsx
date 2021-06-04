@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Pressable, View, StyleSheet } from 'react-native';
+import { Text, Pressable, View, StyleSheet, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
@@ -75,7 +75,7 @@ const BodyMassIndexCalculator = () => {
     const height = parseFloat(values.height);
 
     if (!isNaN(mass) && !isNaN(height) && height !== 0) {
-      console.log(`Your body mass index is: ${getBodyMassIndex(mass, height)}`);
+      Alert.alert(`Your body mass index is: ${getBodyMassIndex(mass, height)}`)
     }
   };
 

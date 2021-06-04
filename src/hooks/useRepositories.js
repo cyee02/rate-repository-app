@@ -3,7 +3,7 @@ import { GET_REPOSITORIES, GET_REPOSITORY } from '../graphql/queries';
 
 const useRepositories = () => {
   const { data, error, loading } = useQuery(GET_REPOSITORIES, {
-    nextFetchPolicy: 'cache-and-network'
+    nextFetchPolicy: 'cache-and-network',
   });
   if (!loading) {
     var repositories = data.repositories;
@@ -12,9 +12,10 @@ const useRepositories = () => {
 };
 
 export const useRepositorySingle = (id) => {
-  const {data, error, loading} = useQuery(
-    GET_REPOSITORY,
-    { variables: { id: id } }
+  const {data, error, loading} = useQuery(GET_REPOSITORY, {
+    fetchPolicy: 'cache-and-network',
+    variables: { id: id }
+    },
   );
   if (!loading) {
     var repository = data.repository

@@ -31,6 +31,21 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5
   },
+  buttonContainer: {
+    backgroundColor: theme.colors.white,
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  repoButton: {
+    backgroundColor: theme.colors.buttons,
+    padding: 5,
+    margin: 5,
+    width: 300,
+    height: 30,
+    borderRadius: 10,
+    justifyContent: 'center'
+  },
   // Text related
   textFullName: {
     color: theme.colors.textPrimary,
@@ -63,6 +78,12 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSize.large,
     fontFamily: theme.fonts.mainBold,
     textAlign: 'center'
+  },
+  buttonText: {
+    color: theme.colors.white,
+    fontFamily: theme.fonts.mainBold,
+    fontSize: theme.fontSize.large,
+    textAlign: 'center'
   }
 });
 
@@ -81,35 +102,24 @@ const StatsTab = ({num, text, testID}) => (
   </View>
 );
 
-const GitHubButton = ({url}) => {
-  const openLink = () => {
-    Linking.openURL(url)
-  }
+const RepoButton = ({url, onPress, text}) => {
   return (
-    <View style={{
-      backgroundColor: theme.colors.white,
-      height: 70,
-      alignItems: 'center',
-      justifyContent: 'center'}}>
-      <Pressable onPress={openLink} style={{
-          backgroundColor: theme.colors.buttons,
-          padding: 5,
-          width: 300,
-          height: 50,
-          borderRadius: 10,
-          justifyContent: 'center'}}>
-        <Text style={{
-          color: theme.colors.white,
-          fontFamily: theme.fonts.mainBold,
-          fontSize: theme.fontSize.large,
-          textAlign: 'center'
-          }}>Open in Github</Text>
-      </Pressable>
-    </View>
+    <Pressable onPress={() => onPress(url)} style={styles.repoButton}>
+      <Text style={styles.buttonText}>{text}</Text>
+    </Pressable>
   )
 }
 
-const RepositoryItem = ({ item, singleView }) => {
+const RepositoryItem = ({ item, singleView, setShowAddReview, setRepoInfo }) => {
+  const openLink = (url) => {
+    Linking.openURL(url)
+  }
+
+  const addReview = () => {
+    setShowAddReview(true)
+    setRepoInfo(item.fullName)
+  }
+
   return(
     <View>
       <View style={styles.container}>
@@ -137,7 +147,12 @@ const RepositoryItem = ({ item, singleView }) => {
           <StatsTab num={item.reviewCount} text='Reviews' testID="reviewCount"/>
           <StatsTab num={item.ratingAverage} text='Rating' testID="ratingAverage"/>
       </View>
-      {singleView ? <GitHubButton url={item.url}/> : <></>}
+      {singleView ?
+        <View style={styles.buttonContainer}>
+          <RepoButton url={item.url} onPress={openLink} text='Open in Github'/>
+          <RepoButton url={item.url} onPress={addReview} text='Add Review'/>
+        </View>
+        : <></>}
     </View>
   );
 };

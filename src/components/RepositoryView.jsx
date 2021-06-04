@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import theme from '../../assets/theme';
 import { StyleSheet, FlatList, View, Text } from 'react-native';
 import { useParams } from 'react-router-native'
@@ -7,6 +7,7 @@ import { format } from 'date-fns'
 import { useRepositorySingle } from '../hooks/useRepositories'
 
 import RepositoryItem from './RepositoryItem'
+import AddReview from './AddReview'
 
 const styles = StyleSheet.create({
   separator: {
@@ -73,6 +74,8 @@ const ReviewItem = ({ data }) => {
 };
 
 const RepositoryView = () => {
+  const [showAddReview, setShowAddReview] = useState(false);
+  const [repoInfo, setRepoInfo] = useState();
   const {id} = useParams();
   const { repository } = useRepositorySingle(id);
   if (!repository){
@@ -80,12 +83,17 @@ const RepositoryView = () => {
       <></>
     )
   }
+  if (showAddReview) {
+    return (
+      <AddReview repoInfo={repoInfo} repoID={id} setShowAddReview={setShowAddReview}/>
+    )
+  }
   return (
     <FlatList
       data={repository.reviews.edges}
       renderItem={({ item }) => <ReviewItem data={item} />}
       keyExtractor={item => item.node.id}
-      ListHeaderComponent={() => <View style={{marginBottom: 10}}><RepositoryItem item={repository} singleView={true} /></View>}
+      ListHeaderComponent={() => <View style={{marginBottom: 10}}><RepositoryItem item={repository} singleView={true} setShowAddReview={setShowAddReview} setRepoInfo={setRepoInfo}/></View>}
       ItemSeparatorComponent={ItemSeparator}
     />
   )
