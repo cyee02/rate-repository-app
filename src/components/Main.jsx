@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Route, Switch, Redirect } from 'react-router-native';
-import theme from '../../assets/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import AppBar from './AppBar';
@@ -9,6 +8,7 @@ import RepositoryList from './RepositoryList';
 import SignIn from './SignIn';
 import BodyMassIndexCalculator from './BodyMassIndexCalculator';
 import RepositoryView from './RepositoryView'
+import SignUp from './SignUp'
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +25,10 @@ const Main = () => {
       <Switch>
         <Route path="/signin" exact>
           <SignIn />
+        </Route>
+
+        <Route path="/signup" exact>
+          <SignUp />
         </Route>
 
         <Route path="/repositories" exact>

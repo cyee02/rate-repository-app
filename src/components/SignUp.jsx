@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 
 import theme from '../../assets/theme';
-import useSignIn from '../hooks/useSignIn';
+import useSignUp from '../hooks/useSignUp';
 import FormikTextInput from '../helper/FormikTextInput';
 
 const styles = StyleSheet.create({
@@ -44,17 +44,15 @@ const initialValues = {
   password: '',
 };
 
-export const SignInForm = ({ onSubmit, handleSignUp }) => {
+export const SignUpForm = ({ onSubmit }) => {
   return(
     <View style={styles.container}>
       <FormikTextInput autoCapitalize="none" style={styles.input} name="username" placeholder="Username" testID="usernameField"/>
       <FormikTextInput autoCapitalize="none" style={styles.input} name="password" placeholder="Password" secureTextEntry={true} testID="passwordField"/>
+      <FormikTextInput autoCapitalize="none" style={styles.input} name="passwordConfirmation" placeholder="Password confirmation" secureTextEntry={true} />
       <View alignItems='center'>
         <Pressable style={styles.pressable} onPress={onSubmit} testID="submitButton">
-          <Text style={styles.font} > Sign In </Text>
-        </Pressable>
-        <Pressable style={[styles.pressable, {backgroundColor: 'transparent'}]} onPress={handleSignUp} >
-          <Text style={[styles.font, {color: theme.colors.textPrimary, fontSize: theme.fontSize.normal}]} > Sign Up </Text>
+          <Text style={styles.font} > Sign Up </Text>
         </Pressable>
       </View>
     </View>
@@ -64,25 +62,30 @@ export const SignInForm = ({ onSubmit, handleSignUp }) => {
 const validationSchema = yup.object().shape({
   username: yup
     .string()
+    .max(30)
+    .min(1)
     .required('Username is required'),
   password: yup
     .string()
+    .max(50)
+    .min(5)
     .required('Password is required'),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Passwords do no match')
+    .required('Password confirmation is required'),
 });
 
-const SignIn = () => {
-  const [signIn] = useSignIn();
+const SignUp = () => {
+  const [signUp] = useSignUp();
   const history = useHistory();
-
-  const handleSignUp = () => {
-    history.push('/signup')
-  }
 
   const onSubmit = async (values) => {
     const { username, password } = values;
     try {
-      await signIn({ username, password });
-      history.push("/repositories");
+      await signUp({ username, password });
+      Alert.alert( `Your account with username ${username} has been created` );
+      history.push("/signin");
     } catch (e) {
       Alert.alert(
         `${e}`
@@ -91,9 +94,9 @@ const SignIn = () => {
   };
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} handleSignUp={handleSignUp}/>}
+      {({ handleSubmit }) => <SignUpForm onSubmit={handleSubmit} />}
     </Formik>
   );
 };
 
-export default SignIn;
+export default SignUp;

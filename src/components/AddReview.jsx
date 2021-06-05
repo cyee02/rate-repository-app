@@ -42,7 +42,7 @@ const initialValues = {
   review: '',
 };
 
-export const SignInForm = ({ onSubmit }) => {
+export const ReviewForm = ({ onSubmit }) => {
   return(
     <View style={styles.container}>
       <FormikTextInput autoCapitalize="none" style={styles.input} name="rating" placeholder="Rating" />
@@ -87,7 +87,7 @@ const AddReview = ({ repoInfo, repoID, setShowAddReview }) => {
   };
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+      {({ handleSubmit }) => <ReviewForm onSubmit={handleSubmit} />}
     </Formik>
   );
 };
