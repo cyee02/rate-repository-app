@@ -91,6 +91,8 @@ export class RepositoryListContainer extends React.Component {
         ItemSeparatorComponent={ItemSeparator}
         ListHeaderComponent={this.renderHeader}
         renderItem={renderItem}
+        onEndReached={props.onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   }
@@ -100,11 +102,12 @@ const RepositoryList = () => {
   const [sorting, setSorting] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchQueryDebounced] = useDebounce(searchQuery, 500)
-  const { repositories } = useRepositories(sorting, searchQueryDebounced);
+  const { repositories, fetchMore } = useRepositories(sorting, searchQueryDebounced);
   const history = useHistory();
 
-  const [visible, setVisible] = useState(false)
-
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -114,6 +117,7 @@ const RepositoryList = () => {
       setSorting={setSorting}
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
+      onEndReach={onEndReach}
     />
   );
 };
