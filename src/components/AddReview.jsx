@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Pressable, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-native'
+import { useParams } from 'react-router-native'
 
 import theme from '../../assets/theme';
 import useReviews from '../hooks/useReviews';
@@ -65,20 +66,18 @@ const validationSchema = yup.object().shape({
     .required('Rating is required')
 });
 
-const AddReview = ({ repoInfo, repoID, setShowAddReview }) => {
+const AddReview = () => {
+  const {ownerName, repositoryName} = useParams();
   const history = useHistory();
   const [addReview] = useReviews();
-  const ownerName = repoInfo.split("/")[0];
-  const repositoryName = repoInfo.split("/")[1];
 
   const onSubmit = async (values) => {
     const { rating, review } = values;
     const ratingConverted = parseInt(rating);
     try {
       await addReview({ repositoryName, ownerName, rating: ratingConverted, text: review });
-      Alert.alert(`Comment added to repository: ${ownerName}/${repositoryName}`)
-      history.push('/repositories')
-      // setShowAddReview(false)
+      Alert.alert('Comment added')
+      history.push(`/repository/${ownerName}.${repositoryName}`)
     } catch (e) {
       Alert.alert(
         `${e}`

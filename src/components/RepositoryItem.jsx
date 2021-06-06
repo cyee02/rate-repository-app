@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import * as Linking from 'expo-linking';
 import { useQuery } from '@apollo/client';
+import { useHistory } from 'react-router-native'
 import { GET_AUTHORIZED_USER } from '../graphql/queries';
 import theme from '../../assets/theme';
 
@@ -112,16 +113,16 @@ const RepoButton = ({url, onPress, text}) => {
   )
 }
 
-const RepositoryItem = ({ item, singleView, setShowAddReview, setRepoInfo }) => {
+const RepositoryItem = ({ item, singleView }) => {
   const { data } = useQuery(GET_AUTHORIZED_USER);
+  const history = useHistory();
   const loggedIn = data && data.authorizedUser;
   const openLink = (url) => {
     Linking.openURL(url)
   }
 
   const addReview = () => {
-    setShowAddReview(true)
-    setRepoInfo(item.fullName)
+    history.push(`/addreview/${item.fullName}`)
   }
 
   return(
