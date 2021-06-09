@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { REPOSITORY_DETAILS } from './fragments';
+import { REPOSITORY_CONNECTION, REPOSITORY_DETAILS, REVIEW_CONNECTION, REVIEW_DETAILS } from './fragments';
 
 export const GET_REPOSITORIES = gql`
   query repositories (
@@ -16,47 +16,21 @@ export const GET_REPOSITORIES = gql`
       first: $first,
       after: $after
     ){
-      edges {
-        node {
-          ...RepositoryDetails
-        }
-        cursor
-      }
-      pageInfo {
-        endCursor
-        startCursor
-        hasNextPage
-      }
+      ...RepositoryConnection
     }
   }
-  ${REPOSITORY_DETAILS}
+  ${REPOSITORY_CONNECTION}
 `;
 
 export const GET_AUTHORIZED_USER = gql`
-  query authorizedUser {
+  query authorizedUser ($includeReviews: Boolean=false) {
     authorizedUser {
       id
       username
-    }
-  }
-`;
-
-export const GET_REPOSITORY = gql`
-  query repository ($id: ID!, $first: Int, $after: String) {
-    repository (id: $id) {
-      url
-      ...RepositoryDetails
-      reviews (first: $first, after: $after) {
+      reviews @include(if: $includeReviews) {
         edges {
           node {
-            id
-            user {
-              id
-              username
-            }
-            rating
-            createdAt
-            text
+            ...ReviewDetails
           }
         }
         pageInfo {
@@ -67,5 +41,19 @@ export const GET_REPOSITORY = gql`
       }
     }
   }
+  ${REVIEW_DETAILS}
+`;
+
+export const GET_REPOSITORY = gql`
+  query repository ($id: ID!, $first: Int, $after: String) {
+    repository (id: $id) {
+      url
+      ...RepositoryDetails
+      reviews (first: $first, after: $after) {
+        ...ReviewConnection
+      }
+    }
+  }
   ${REPOSITORY_DETAILS}
+  ${REVIEW_CONNECTION}
 `;

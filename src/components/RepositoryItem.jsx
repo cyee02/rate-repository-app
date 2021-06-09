@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import * as Linking from 'expo-linking';
-import { useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-native'
-import { GET_AUTHORIZED_USER } from '../graphql/queries';
+import useAuthUser from '../hooks/useAuthUser'
 import theme from '../../assets/theme';
 
 const styles = StyleSheet.create({
@@ -114,9 +113,8 @@ const RepoButton = ({url, onPress, text}) => {
 }
 
 const RepositoryItem = ({ item, singleView }) => {
-  const { data } = useQuery(GET_AUTHORIZED_USER);
+  const { user } = useAuthUser(true);
   const history = useHistory();
-  const loggedIn = data && data.authorizedUser;
   const openLink = (url) => {
     Linking.openURL(url)
   }
@@ -155,7 +153,7 @@ const RepositoryItem = ({ item, singleView }) => {
       {singleView ?
         <View style={styles.buttonContainer}>
           <RepoButton url={item.url} onPress={openLink} text='Open in Github'/>
-          {loggedIn ? <RepoButton url={item.url} onPress={addReview} text='Add Review'/> : null}
+          {user ? <RepoButton url={item.url} onPress={addReview} text='Add Review'/> : null}
         </View>
         : <></>}
     </View>

@@ -10,6 +10,7 @@ import BodyMassIndexCalculator from './BodyMassIndexCalculator';
 import RepositoryView from './RepositoryView'
 import SignUp from './SignUp'
 import AddReview from './AddReview'
+import MyReview from './MyReview'
 
 const styles = StyleSheet.create({
   container: {
@@ -46,6 +47,10 @@ const Main = () => {
 
         <Route path="/addreview/:ownerName/:repositoryName" exact>
           <AddReview />
+        </Route>
+
+        <Route path="/myreview" exact>
+          <MyReview />
         </Route>
 
         <Redirect to="/repositories" />

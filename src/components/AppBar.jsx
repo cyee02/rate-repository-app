@@ -4,10 +4,9 @@ import { Link } from "react-router-native";
 import Constants from 'expo-constants';
 import theme from '../../assets/theme';
 
-import { useQuery } from '@apollo/client';
-import { GET_AUTHORIZED_USER } from '../graphql/queries';
 import { useHistory } from "react-router-native";
 import useAuthStorage from '../hooks/useAuthStorage';
+import useAuthUser from '../hooks/useAuthUser'
 import { useApolloClient } from '@apollo/client';
 
 const styles = StyleSheet.create({
@@ -72,16 +71,16 @@ const SignOutTab = ({data}) => {
 };
 
 const AppBar = () => {
-  const { data } = useQuery(GET_AUTHORIZED_USER);
-  const loggedIn = data && data.authorizedUser;
+  const { user } = useAuthUser(false);
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
         <Tab text='Repositories' link="/repositories" show={true}/>
-        <Tab text='BMI' link="/bmi" show={loggedIn}/>
-        <Tab text='Sign In' link="/signin" show={!loggedIn}/>
-        <SignOutTab data={loggedIn} />
+        <Tab text='BMI' link="/bmi" show={user}/>
+        <Tab text='Sign In' link="/signin" show={!user}/>
+        <Tab text='My Reviews' link="/myreview" show={user}/>
+        <SignOutTab data={user} />
       </ScrollView>
     </View>
   );
