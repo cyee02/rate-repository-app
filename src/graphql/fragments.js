@@ -42,6 +42,7 @@ export const REVIEW_DETAILS = gql`
     createdAt
     text
     repository {
+      id
       fullName
     }
   }
